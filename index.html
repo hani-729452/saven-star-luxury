@@ -1,0 +1,521 @@
+ <!DOCTYPE html>
+<html lang="en" id="html-root" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEVEN STAR | Luxury Fashion & Modest Wear</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        roseGold: '#e0a96d',
+                        roseGoldHover: '#c88f53',
+                        luxuryDark: '#0b0a0e',
+                        cardDark: '#141319',
+                        accentPink: '#f7d6d0'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: #0b0a0e; 
+            color: #f3f4f6;
+        }
+        .brand-font { font-family: 'Playfair Display', serif; }
+        .arabic-font { font-family: 'Amiri', serif; }
+        
+        .hero-bg {
+            background: linear-gradient(to bottom, rgba(11, 10, 14, 0.65), rgba(11, 10, 14, 0.9)), url('https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1920') center/cover no-repeat fixed;
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #fce0c8 0%, #e0a96d 50%, #c88f53 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-border-glow {
+            border: 1px solid rgba(224, 169, 109, 0.2);
+            transition: all 0.4s ease;
+        }
+
+        .gold-border-glow:hover {
+            border-color: rgba(224, 169, 109, 0.8);
+            box-shadow: 0 10px 30px -10px rgba(224, 169, 109, 0.35);
+            transform: translateY(-5px);
+        }
+
+        .glass-nav {
+            background: rgba(11, 10, 14, 0.88);
+            backdrop-filter: blur(14px);
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- Top Bar with Language & Currency Switcher -->
+    <div class="bg-gradient-to-r from-roseGold via-amber-200 to-roseGold text-black font-semibold text-xs py-2 px-4 flex justify-between items-center md:px-12 shadow-lg">
+        <span id="top-shipping-msg">✨ Worldwide Express Shipping ✈️ (Pakistan | Turkey | Saudi Arabia | Global) ✨</span>
+        
+        <div class="flex items-center space-x-3">
+            <i class="fa-solid fa-globe text-xs"></i>
+            <select id="lang-selector" onchange="changeLanguage(this.value)" class="bg-black/10 text-xs font-bold focus:outline-none cursor-pointer rounded px-2 py-0.5 border border-black/20">
+                <option value="en">English (USD $)</option>
+                <option value="ur">اردو (PKR Rs)</option>
+                <option value="tr">Türkçe (TRY ₺)</option>
+                <option value="ar">العربية (SAR ر.س)</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <nav class="glass-nav sticky top-0 z-40 border-b border-roseGold/20">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            
+            <div class="text-left">
+                <a href="#" class="brand-font text-2xl md:text-3xl font-bold tracking-wider gold-gradient-text block">SEVEN STAR</a>
+                <span class="text-[9px] tracking-[0.25em] text-roseGold/80 uppercase block">Mansehra • Istanbul • Saudi Arabia • Global</span>
+            </div>
+
+            <div class="hidden md:flex space-x-8 text-xs font-semibold tracking-widest text-gray-300 uppercase">
+                <a href="#products" id="nav-new" class="hover:text-roseGold transition">New Arrivals</a>
+                <a href="#products" id="nav-unstitched" class="hover:text-roseGold transition">Unstitched</a>
+                <a href="#products" id="nav-abayas" class="hover:text-roseGold transition">Abayas & Gowns</a>
+                <a href="#products" id="nav-bridal" class="hover:text-roseGold transition">Bridal & Maxi</a>
+            </div>
+
+            <!-- Shopping Cart Icon -->
+            <div class="flex items-center space-x-6 text-xl text-gray-200">
+                <div class="relative cursor-pointer hover:scale-110 transition" onclick="toggleCartPanel()">
+                    <i class="fa-solid fa-bag-shopping text-roseGold"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-gradient-to-r from-amber-400 to-roseGold text-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-md">0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <section class="hero-bg h-[80vh] flex items-center justify-center text-center text-white px-4 relative">
+        <div class="max-w-3xl space-y-6">
+            <p id="hero-subtitle" class="text-roseGold text-xs md:text-sm tracking-[0.5em] uppercase font-semibold">Haute Couture Collection 2026</p>
+            <h1 id="hero-title" class="brand-font text-4xl md:text-7xl font-normal leading-tight italic gold-gradient-text">Elegance Redefined For The Modern Woman</h1>
+            <p id="hero-desc" class="text-gray-300 text-sm max-w-lg mx-auto font-light">Royal craftsmanship, luxurious fabrics & modest elegance designed for royalty.</p>
+            <div class="pt-4">
+                <a href="#products" id="hero-btn" class="bg-gradient-to-r from-roseGold to-roseGoldHover text-black px-10 py-4 text-xs font-bold tracking-[0.2em] uppercase rounded-full shadow-lg shadow-roseGold/20 hover:scale-105 transition duration-300">Explore Collection</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="max-w-7xl mx-auto px-6 py-20">
+        <div class="text-center mb-16 space-y-2">
+            <h2 id="section-title" class="brand-font text-3xl md:text-4xl font-semibold tracking-wide gold-gradient-text">Featured Luxury Arrivals</h2>
+            <p id="section-subtitle" class="text-xs text-roseGold/70 tracking-widest uppercase">Order directly via WhatsApp or Add to Cart</p>
+            <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-roseGold to-transparent mx-auto mt-4"></div>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            
+            <!-- PRODUCT 1 -->
+            <div class="group bg-cardDark rounded-2xl overflow-hidden gold-border-glow">
+                <div class="relative overflow-hidden h-88">
+                    <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=800" alt="Lawn Suit" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    <span class="absolute top-4 left-4 bg-black/80 backdrop-blur-md text-roseGold border border-roseGold/30 text-[9px] uppercase tracking-widest px-3 py-1 rounded-full">Gul Ahmed / Bonanza</span>
+                </div>
+                <div class="p-5 text-center space-y-3">
+                    <h3 class="text-sm font-medium text-gray-200 group-hover:text-roseGold transition">Luxury Embroidered 3-Piece Lawn</h3>
+                    <p class="text-roseGold font-bold text-base price-pkr">PKR 8,500</p>
+                    <p class="text-roseGold font-bold text-base price-usd hidden">$ 30</p>
+                    <p class="text-roseGold font-bold text-base price-try hidden">₺ 1,050</p>
+                    <p class="text-roseGold font-bold text-base price-sar hidden">115 ر.س</p>
+                    <div class="pt-2 flex flex-col space-y-2">
+                        <button onclick="addToCart('Luxury Embroidered 3-Piece Lawn', 8500)" class="btn-add-cart w-full bg-roseGold/10 border border-roseGold/40 text-roseGold py-2.5 rounded-xl text-xs uppercase tracking-widest font-semibold hover:bg-roseGold hover:text-black transition duration-300">Add To Cart</button>
+                        <a href="https://wa.me/923000000000?text=I%20want%20to%20order%20Luxury%20Embroidered%203-Piece%20Lawn" target="_blank" class="btn-whatsapp w-full bg-green-600/20 border border-green-500/40 text-green-400 py-2.5 rounded-xl text-xs uppercase tracking-widest font-semibold hover:bg-green-600 hover:text-white transition duration-300 flex items-center justify-center">
+                            <i class="fa-brands fa-whatsapp mr-2 text-sm"></i> WhatsApp Order
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRODUCT 2 -->
+            <div class="group bg-cardDark rounded-2xl overflow-hidden gold-border-glow">
+                <div class="relative overflow-hidden h-88">
+                    <img src="https://images.unsplash.com/photo-1563178406-4cdc2923acbc?q=80&w=800" alt="Abaya" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    <span class="absolute top-4 left-4 bg-black/80 backdrop-blur-md text-roseGold border border-roseGold/30 text-[9px] uppercase tracking-widest px-3 py-1 rounded-full">Turkish / Saudi Abaya</span>
+                </div>
+                <div class="p-5 text-center space-y-3">
+                    <h3 class="text-sm font-medium text-gray-200 group-hover:text-roseGold transition">Premium Dubai Nidah Fabric Abaya</h3>
+                    <p class="text-roseGold font-bold text-base price-pkr">PKR 12,000</p>
+                    <p class="text-roseGold font-bold text-base price-usd hidden">$ 43</p>
+                    <p class="text-roseGold font-bold text-base price-try hidden">₺ 1,480</p>
+                    <p class="text-roseGold font-bold text-base price-sar hidden">160 ر.س</p>
+                    <div class="pt-2 flex flex-col space-y-2">
+                        <button onclick="addToCart('Premium Dubai Nidah Fabric Abaya', 12000)" class="btn-add-cart w-full bg-roseGold/10 border border-roseGold/40 text-roseGold py-2.5 rounded-xl text-xs uppercase tracking-widest font-semibold hover:bg-roseGold hover:text-black transition duration-300">Add To Cart</button>
+                        <a href="https://wa.me/923000000000?text=I%20want%20to%20order%20Premium%20Dubai%20Nidah%20Fabric%20Abaya" target="_blank" class="btn-whatsapp w-full bg-green-600/20 border border-green-500/40 text-green-400 py-2.5 rounded-xl text-xs uppercase tracking-widest font-semibold hover:bg-green-600 hover:text-white transition duration-300 flex items-center justify-center">
+                            <i class="fa-brands fa-whatsapp mr-2 text-sm"></i> WhatsApp Order
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRODUCT 3 -->
+            <div class="group bg-cardDark rounded-2xl overflow-hidden gold-border-glow">
+                <div class="relative overflow-hidden h-88">
+                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800" alt="Maxi" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    <span class="absolute top-4 left-4 bg-black/80 backdrop-blur-md text-roseGold border border-roseGold/30 text-[9px] uppercase tracking-widest px-3 py-1 rounded-full">Royal Bridal</span>
+                </div>
+                <div class="p-5 text-center space-y-3">
+                    <h3 class="text-sm font-medium text-gray-200 group-hover:text-roseGold transition">Hand Embroidered Designer Maxi</h3>
+                    <p class="text-roseGold font-bold text-base price-pkr">PKR 24,500</p>
+                    <p class="text-roseGold font-bold text-base price-usd hidden">$ 88</p>
+                    <p class="text-roseGold font-bold text-base price-try hidden">₺ 3,020</p>
+                    <p class="text-roseGold font-bold text-base price-sar hidden">330 ر.س</p>
+                    <div class="pt-2 flex flex-col space-y-2">
+                        <button onclick="addToCart('Hand Embroidered Designer Maxi', 24500)" class="btn-add-cart w-full bg-roseGold/10 border border-roseGold/40 text-roseGold py-2.5 rounded-xl text-xs uppercase tracking-widest font-semibold hover:bg-roseGold hover:text-black transition duration-300">Add To Cart</button>
+                        <a href="https://wa.me/923000000000?text=I%20want%20to%20order%20Hand%20Embroidered%20Designer%20Maxi" target="_blank" class="btn-whatsapp w-full bg-green-600/20 border border-green-500/40 text-green-400 py-2.5 rounded-xl text-xs uppercase tracking-widest font-semibold hover:bg-green-600 hover:text-white transition duration-300 flex items-center justify-center">
+                            <i class="fa-brands fa-whatsapp mr-2 text-sm"></i> WhatsApp Order
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRODUCT 4 -->
+            <div class="group bg-cardDark rounded-2xl overflow-hidden gold-border-glow">
+                <div class="relative overflow-hidden h-88">
+                    <img src="https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?q=80&w=800" alt="Maria B" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    <span class="absolute top-4 left-4 bg-black/80 backdrop-blur-md text-roseGold border border-roseGold/30 text-[9px] uppercase tracking-widest px-3 py-1 rounded-full">Maria B. Luxury</span>
+                </div>
+                <div class="p-5 text-center space-y-3">
+                    <h3 class="text-sm font-medium text-gray-200 group-hover:text-roseGold transition">Maria B. Luxury Chiffon Collection</h3>
+                    <p class="text-roseGold font-bold text-base price-pkr">PKR 16,500</p>
+                    <p class="text-roseGold font-bold text-base price-usd hidden">$ 59</p>
+                    <p class="text-roseGold font-bold text-base price-try hidden">₺ 2,030</p>
+                    <p class="text-roseGold font-bold text-base price-sar hidden">220 ر.س</p>
+                    <div class="pt-2 flex flex-col space-y-2">
+                        <button onclick="addToCart('Maria B. Luxury Chiffon Collection', 16500)" class="btn-add-cart w-full bg-roseGold/10 border border-roseGold/40 text-roseGold py-2.5 rounded-xl text-xs uppercase tracking-widest font-semibold hover:bg-roseGold hover:text-black transition duration-300">Add To Cart</button>
+                        <a href="https://wa.me/923000000000?text=I%20want%20to%20order%20Maria%20B.%20Luxury%20Chiffon%20Collection" target="_blank" class="btn-whatsapp w-full bg-green-600/20 border border-green-500/40 text-green-400 py-2.5 rounded-xl text-xs uppercase tracking-widest font-semibold hover:bg-green-600 hover:text-white transition duration-300 flex items-center justify-center">
+                            <i class="fa-brands fa-whatsapp mr-2 text-sm"></i> WhatsApp Order
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- SLIDE-OUT SHOPPING CART PANEL -->
+    <div id="cart-panel" class="fixed top-0 right-0 w-80 md:w-96 h-full bg-cardDark border-l border-roseGold/30 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-5 border-b border-roseGold/20 flex justify-between items-center bg-black/40">
+            <h3 id="cart-heading" class="brand-font text-lg font-semibold gold-gradient-text uppercase">Your Shopping Bag</h3>
+            <button onclick="toggleCartPanel()" class="text-2xl text-gray-400 hover:text-roseGold">&times;</button>
+        </div>
+        
+        <div id="cart-items-container" class="p-5 flex-1 overflow-y-auto space-y-4">
+            <p id="empty-cart-text" class="text-center text-sm text-gray-400 mt-10">Your bag is empty.</p>
+        </div>
+
+        <div class="p-5 border-t border-roseGold/20 bg-black/60 space-y-4">
+            <div class="flex justify-between font-bold text-lg">
+                <span id="cart-total-label" class="text-gray-300">Total:</span>
+                <span id="cart-total-price" class="text-roseGold">PKR 0</span>
+            </div>
+            <button id="btn-checkout" onclick="openCheckoutModal()" class="w-full bg-gradient-to-r from-roseGold to-roseGoldHover text-black py-3.5 rounded-xl font-bold uppercase text-xs tracking-widest shadow-lg hover:scale-105 transition">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- CHECKOUT ORDER FORM MODAL -->
+    <div id="checkout-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-cardDark border border-roseGold/30 rounded-2xl w-full max-w-md p-6 relative shadow-2xl">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-5 text-2xl font-bold text-gray-400 hover:text-roseGold">&times;</button>
+            <h3 id="modal-heading" class="brand-font text-2xl font-semibold mb-6 text-center gold-gradient-text border-b border-roseGold/20 pb-3">Complete Your Order</h3>
+            
+            <form onsubmit="submitOrder(event)" class="space-y-4">
+                <div>
+                    <label id="lbl-name" class="block text-xs font-semibold uppercase text-roseGold mb-1">Full Name</label>
+                    <input type="text" required class="w-full bg-black/50 border border-roseGold/30 px-4 py-2.5 text-sm rounded-xl text-white focus:outline-none focus:border-roseGold" placeholder="Full Name">
+                </div>
+                <div>
+                    <label id="lbl-phone" class="block text-xs font-semibold uppercase text-roseGold mb-1">WhatsApp / Phone Number</label>
+                    <input type="tel" required class="w-full bg-black/50 border border-roseGold/30 px-4 py-2.5 text-sm rounded-xl text-white focus:outline-none focus:border-roseGold" placeholder="+92 / +90 / +966 / +1">
+                </div>
+                <div>
+                    <label id="lbl-country" class="block text-xs font-semibold uppercase text-roseGold mb-1">Country</label>
+                    <select class="w-full bg-black/50 border border-roseGold/30 px-4 py-2.5 text-sm rounded-xl text-white focus:outline-none focus:border-roseGold">
+                        <option class="bg-cardDark">Pakistan</option>
+                        <option class="bg-cardDark">Saudi Arabia (KSA)</option>
+                        <option class="bg-cardDark">Turkey (Türkiye)</option>
+                        <option class="bg-cardDark">United Kingdom (UK)</option>
+                        <option class="bg-cardDark">United States (USA)</option>
+                    </select>
+                </div>
+                <div>
+                    <label id="lbl-address" class="block text-xs font-semibold uppercase text-roseGold mb-1">Delivery Address</label>
+                    <textarea required rows="2" class="w-full bg-black/50 border border-roseGold/30 px-4 py-2.5 text-sm rounded-xl text-white focus:outline-none focus:border-roseGold" placeholder="Street Address, City, Zip Code"></textarea>
+                </div>
+                <button type="submit" id="btn-confirm-order" class="w-full bg-gradient-to-r from-roseGold to-roseGoldHover text-black py-3.5 rounded-xl text-xs font-bold uppercase tracking-widest shadow-lg hover:scale-105 transition mt-2">Confirm & Place Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT & MULTI-LANGUAGE SYSTEM -->
+    <script>
+        let cart = [];
+        let currentLang = 'en';
+
+        const translations = {
+            en: {
+                dir: 'ltr',
+                shipping: '✨ Worldwide Express Shipping ✈️ (Pakistan | Turkey | Saudi Arabia | Global) ✨',
+                navNew: 'New Arrivals', navUnstitched: 'Unstitched', navAbayas: 'Abayas & Gowns', navBridal: 'Bridal & Maxi',
+                heroSubtitle: 'Haute Couture Collection 2026',
+                heroTitle: 'Elegance Redefined For The Modern Woman',
+                heroDesc: 'Royal craftsmanship, luxurious fabrics & modest elegance designed for royalty.',
+                heroBtn: 'Explore Collection',
+                secTitle: 'Featured Luxury Arrivals',
+                secSubtitle: 'Order directly via WhatsApp or Add to Cart',
+                addCart: 'Add To Cart',
+                whatsapp: 'WhatsApp Order',
+                cartHeading: 'Your Shopping Bag',
+                emptyCart: 'Your shopping bag is empty.',
+                cartTotal: 'Total:',
+                btnCheckout: 'Proceed to Checkout',
+                modalHead: 'Complete Your Order',
+                lblName: 'Full Name',
+                lblPhone: 'WhatsApp / Phone Number',
+                lblCountry: 'Country',
+                lblAddress: 'Delivery Address',
+                btnConfirm: 'Confirm & Place Order'
+            },
+            ur: {
+                dir: 'rtl',
+                shipping: '✨ دنیا بھر میں ایکسپریس شپنگ ✈️ (پاکستان | ترکی | سعودی عرب | گلوبل) ✨',
+                navNew: 'تازہ ترین برانڈز', navUnstitched: 'ان اسٹچڈ سوٹس', navAbayas: 'عبایہ اور ڈریسز', navBridal: 'عروسی اور میکسی',
+                heroSubtitle: 'شاہی مجموعہ ۲۰۲۶',
+                heroTitle: 'خواتین کے لیے بے مثال اور باوقار فیشن',
+                heroDesc: 'شاہی نفاست، اعلیٰ ترین فیبرک اور شاندار ڈریسز آپ کی خوبصورتی کے لیے۔',
+                heroBtn: 'کلیکشن دیکھیں',
+                secTitle: 'خاص شاہی مجموعہ',
+                secSubtitle: 'واٹس ایپ پر ڈائریکٹ آرڈر کریں یا کارٹ میں شامل کریں',
+                addCart: 'کارٹ میں شامل کریں',
+                whatsapp: 'واٹس ایپ پر آرڈر کریں',
+                cartHeading: 'آپ کا شاپنگ بیگ',
+                emptyCart: 'آپ کا شاپنگ بیگ فی الحال خالی ہے۔',
+                cartTotal: 'کل قیمت:',
+                btnCheckout: 'آرڈر کی طرف بڑھیں',
+                modalHead: 'آرڈر مکمل کریں',
+                lblName: 'مکمل نام',
+                lblPhone: 'واٹس ایپ / فون نمبر',
+                lblCountry: 'ملک',
+                lblAddress: 'ڈلیوری کا پتہ',
+                btnConfirm: 'آرڈر کی تصدیق کریں'
+            },
+            tr: {
+                dir: 'ltr',
+                shipping: '✨ Dünya Çapında Hızlı Teslimat ✈️ (Pakistan | Türkiye | Suudi Arabistan | Global) ✨',
+                navNew: 'Yeni Gelenler', navUnstitched: 'Kumaşlar', navAbayas: 'Abaye & Elbise', navBridal: 'Gelinlik & Maxi',
+                heroSubtitle: 'Lüks Koleksiyon 2026',
+                heroTitle: 'Modern Kadın İçin Yeniden Tanımlanan Zarafet',
+                heroDesc: 'Kraliyet zarafeti, lüks kumaşlar ve modern tesettür modası.',
+                heroBtn: 'Koleksiyonu Keşfet',
+                secTitle: 'Öne Çıkan Lüks Tasarımlar',
+                secSubtitle: 'WhatsApp İle Sipariş Verin Veya Sepete Ekleyin',
+                addCart: 'Sepete Ekle',
+                whatsapp: 'WhatsApp Sipariş',
+                cartHeading: 'Alışveriş Sepetiniz',
+                emptyCart: 'Sepetiniz henüz boş.',
+                cartTotal: 'Toplam:',
+                btnCheckout: 'Ödemeye Geç',
+                modalHead: 'Siparişi Tamamla',
+                lblName: 'Ad Soyad',
+                lblPhone: 'WhatsApp / Telefon',
+                lblCountry: 'Ülke',
+                lblAddress: 'Teslimat Adresi',
+                btnConfirm: 'Siparişi Onayla'
+            },
+            ar: {
+                dir: 'rtl',
+                shipping: '✨ شحن سريع لجميع أنحاء العالم ✈️ (باكستان | تركيا | السعودية | عالمي) ✨',
+                navNew: 'وصل حديثاً', navUnstitched: 'أقمشة غير مخيطة', navAbayas: 'عبايات وفساتين', navBridal: 'فساتين زفاف',
+                heroSubtitle: 'تشكيلة الموضة الراقية 2026',
+                heroTitle: 'الأناقة الملكية للمرأة العصرية',
+                heroDesc: 'تصاميم فاخرة، أقمشة راقية، وأناقة تليق بكِ.',
+                heroBtn: 'استكشف التشكيلة',
+                secTitle: 'التشكيلة الفاخرة الممتازة',
+                secSubtitle: 'اطلب مباشرة عبر الواتساب أو أضف إلى السلة',
+                addCart: 'أضف إلى السلة',
+                whatsapp: 'طلب عبر الواتساب',
+                cartHeading: 'حقيبة التسوق',
+                emptyCart: 'حقيبة التسوق فارغة حالياً.',
+                cartTotal: 'المجموع:',
+                btnCheckout: 'متابعة الشراء',
+                modalHead: 'إتمام الطلب',
+                lblName: 'الاسم الكامل',
+                lblPhone: 'رقم الواتساب / الهاتف',
+                lblCountry: 'الدولة',
+                lblAddress: 'عنوان التوصيل',
+                btnConfirm: 'تأكيد الطلب'
+            }
+        };
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+
+            document.getElementById('html-root').dir = t.dir;
+            document.getElementById('top-shipping-msg').innerText = t.shipping;
+            document.getElementById('nav-new').innerText = t.navNew;
+            document.getElementById('nav-unstitched').innerText = t.navUnstitched;
+            document.getElementById('nav-abayas').innerText = t.navAbayas;
+            document.getElementById('nav-bridal').innerText = t.navBridal;
+
+            document.getElementById('hero-subtitle').innerText = t.heroSubtitle;
+            document.getElementById('hero-title').innerText = t.heroTitle;
+            document.getElementById('hero-desc').innerText = t.heroDesc;
+            document.getElementById('hero-btn').innerText = t.heroBtn;
+
+            document.getElementById('section-title').innerText = t.secTitle;
+            document.getElementById('section-subtitle').innerText = t.secSubtitle;
+
+            document.getElementById('cart-heading').innerText = t.cartHeading;
+            document.getElementById('empty-cart-text').innerText = t.emptyCart;
+            document.getElementById('cart-total-label').innerText = t.cartTotal;
+            document.getElementById('btn-checkout').innerText = t.btnCheckout;
+
+            document.getElementById('modal-heading').innerText = t.modalHead;
+            document.getElementById('lbl-name').innerText = t.lblName;
+            document.getElementById('lbl-phone').innerText = t.lblPhone;
+            document.getElementById('lbl-country').innerText = t.lblCountry;
+            document.getElementById('lbl-address').innerText = t.lblAddress;
+            document.getElementById('btn-confirm-order').innerText = t.btnConfirm;
+
+            document.querySelectorAll('.btn-add-cart').forEach(btn => btn.innerText = t.addCart);
+            document.querySelectorAll('.btn-whatsapp').forEach(btn => btn.innerHTML = `<i class="fa-brands fa-whatsapp mr-2 text-sm"></i> ${t.whatsapp}`);
+
+            // Currency Display Toggle
+            document.querySelectorAll('.price-pkr, .price-usd, .price-try, .price-sar').forEach(el => el.classList.add('hidden'));
+            if(lang === 'ur') document.querySelectorAll('.price-pkr').forEach(el => el.classList.remove('hidden'));
+            else if(lang === 'tr') document.querySelectorAll('.price-try').forEach(el => el.classList.remove('hidden'));
+            else if(lang === 'ar') document.querySelectorAll('.price-sar').forEach(el => el.classList.remove('hidden'));
+            else document.querySelectorAll('.price-usd').forEach(el => el.classList.remove('hidden'));
+
+            updateCartUI();
+        }
+
+        function toggleCartPanel() {
+            const panel = document.getElementById('cart-panel');
+            panel.classList.toggle('translate-x-full');
+        }
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCartUI();
+            toggleCartPanel();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const container = document.getElementById('cart-items-container');
+            const totalText = document.getElementById('cart-total-price');
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-center text-sm text-gray-400 mt-10">${translations[currentLang].emptyCart}</p>`;
+                totalText.innerText = currentLang === 'ur' ? 'PKR 0' : (currentLang === 'tr' ? '₺ 0' : (currentLang === 'ar' ? '0 ر.س' : '$ 0'));
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                html += `
+                    <div class="flex justify-between items-center border-b border-roseGold/10 pb-3">
+                        <div>
+                            <h4 class="text-xs font-semibold text-gray-200">${item.name}</h4>
+                            <p class="text-roseGold font-bold text-xs mt-1">PKR ${item.price.toLocaleString()}</p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-red-400 hover:text-red-300 text-sm p-1"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            totalText.innerText = 'PKR ' + total.toLocaleString();
+        }
+
+        function openCheckoutModal() {
+            if (cart.length === 0) {
+                alert(currentLang === 'ur' ? 'براہ کرم پہلے کوئی پروڈکٹ منتخب کریں!' : 'Please add an item to cart first!');
+                return;
+            }
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        async function submitOrder(e) {
+            e.preventDefault();
+
+            const name = e.target.querySelector('input[placeholder="Full Name"]').value;
+            const phone = e.target.querySelector('input[type="tel"]').value;
+            const country = e.target.querySelector('select').value;
+            const address = e.target.querySelector('textarea').value;
+
+            let totalPrice = 0;
+            cart.forEach(item => totalPrice += item.price);
+
+            const orderData = {
+                name: name,
+                phone: phone,
+                country: country,
+                address: address,
+                items: cart,
+                totalPrice: totalPrice
+            };
+
+            try {
+                const response = await fetch('http://localhost:5000/api/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Order Success! Order ID: #' + result.orderId);
+                    cart = [];
+                    updateCartUI();
+                    closeCheckoutModal();
+                    toggleCartPanel();
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error submitting order:', error);
+                alert('Server Connection Error. Make sure Node.js Backend is running.');
+            }
+        }
+    </script>
+</body>
+</html>
+    

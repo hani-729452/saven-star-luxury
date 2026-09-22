@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEVEN STAR | Admin Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        roseGold: '#e0a96d',
+                        luxuryDark: '#0b0a0e',
+                        cardDark: '#141319'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0b0a0e; color: #f3f4f6; }
+        .brand-font { font-family: 'Playfair Display', serif; }
+        .gold-gradient {
+            background: linear-gradient(135deg, #fce0c8 0%, #e0a96d 50%, #c88f53 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="p-6 md:p-10">
+
+    <!-- Header Section -->
+    <div class="max-w-7xl mx-auto flex justify-between items-center border-b border-roseGold/20 pb-6 mb-8">
+        <div>
+            <h1 class="brand-font text-3xl md:text-4xl font-bold gold-gradient">SEVEN STAR ADMIN</h1>
+            <p class="text-xs text-roseGold/70 tracking-widest uppercase mt-1">Orders Management Dashboard</p>
+        </div>
+        <button onclick="fetchOrders()" class="bg-roseGold/10 border border-roseGold/40 text-roseGold px-5 py-2.5 rounded-xl text-xs font-semibold hover:bg-roseGold hover:text-black transition duration-300 flex items-center">
+            <i class="fa-solid fa-rotate mr-2"></i> Refresh Orders
+        </button>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div class="bg-cardDark border border-roseGold/20 p-6 rounded-2xl shadow-lg">
+            <p class="text-xs text-gray-400 uppercase tracking-wider">Total Orders</p>
+            <h3 id="stat-total-orders" class="text-3xl font-bold text-roseGold mt-2">0</h3>
+        </div>
+        <div class="bg-cardDark border border-roseGold/20 p-6 rounded-2xl shadow-lg">
+            <p class="text-xs text-gray-400 uppercase tracking-wider">Total Revenue</p>
+            <h3 id="stat-total-revenue" class="text-3xl font-bold text-green-400 mt-2">PKR 0</h3>
+        </div>
+        <div class="bg-cardDark border border-roseGold/20 p-6 rounded-2xl shadow-lg">
+            <p class="text-xs text-gray-400 uppercase tracking-wider">Server Status</p>
+            <h3 class="text-xl font-bold text-emerald-400 mt-3 flex items-center">
+                <span class="w-3 h-3 bg-green-500 rounded-full animate-ping mr-2"></span> Connected
+            </h3>
+        </div>
+    </div>
+
+    <!-- Orders Table Section -->
+    <div class="max-w-7xl mx-auto bg-cardDark border border-roseGold/20 rounded-2xl overflow-hidden shadow-2xl">
+        <div class="p-5 border-b border-roseGold/10 bg-black/40">
+            <h2 class="text-lg font-semibold text-roseGold">Received Customer Orders</h2>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs md:text-sm">
+                <thead>
+                    <tr class="bg-black/60 border-b border-roseGold/20 text-roseGold uppercase tracking-wider font-semibold">
+                        <th class="p-4">Order ID</th>
+                        <th class="p-4">Customer Name</th>
+                        <th class="p-4">Phone / WhatsApp</th>
+                        <th class="p-4">Country</th>
+                        <th class="p-4">Delivery Address</th>
+                        <th class="p-4">Ordered Items</th>
+                        <th class="p-4">Total Price</th>
+                        <th class="p-4">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-table-body" class="divide-y divide-roseGold/10 text-gray-300">
+                    <tr>
+                        <td colspan="8" class="text-center p-8 text-gray-500">Loading orders...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        async function fetchOrders() {
+            try {
+                const response = await fetch('http://localhost:5000/api/orders');
+                const data = await response.json();
+
+                if (data.success) {
+                    renderOrders(data.orders);
+                } else {
+                    alert('Error fetching orders');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('orders-table-body').innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center p-8 text-red-400">Unable to connect to backend server. Make sure "node server.js" is running.</td>
+                    </tr>
+                `;
+            }
+        }
+
+        function renderOrders(orders) {
+            const tableBody = document.getElementById('orders-table-body');
+            
+            if (orders.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center p-8 text-gray-500">No orders received yet.</td>
+                    </tr>
+                `;
+                document.getElementById('stat-total-orders').innerText = '0';
+                document.getElementById('stat-total-revenue').innerText = 'PKR 0';
+                return;
+            }
+
+            let html = '';
+            let totalRevenue = 0;
+
+            orders.forEach(order => {
+                totalRevenue += order.total_price;
+
+                let itemsList = '';
+                if(Array.isArray(order.items)) {
+                    itemsList = order.items.map(item => `<span class="bg-roseGold/10 text-roseGold px-2 py-0.5 rounded text-[11px] block w-max my-0.5">${item.name} (PKR ${item.price})</span>`).join('');
+                } else {
+                    itemsList = 'N/A';
+                }
+
+                // Clean phone number for direct WhatsApp link
+                const cleanPhone = order.phone.replace(/[^0-9]/g, '');
+
+                html += `
+                    <tr class="hover:bg-white/5 transition">
+                        <td class="p-4 font-bold text-roseGold">#${order.id}</td>
+                        <td class="p-4 font-semibold text-white">${order.customer_name}</td>
+                        <td class="p-4">${order.phone}</td>
+                        <td class="p-4">${order.country}</td>
+                        <td class="p-4 max-w-xs text-xs">${order.address}</td>
+                        <td class="p-4">${itemsList}</td>
+                        <td class="p-4 font-bold text-green-400">PKR ${order.total_price.toLocaleString()}</td>
+                        <td class="p-4">
+                            <a href="https://wa.me/${cleanPhone}?text=Hello%20${encodeURIComponent(order.customer_name)},%20we%20received%20your%20Order%20%23${order.id}%20at%20SEVEN%20STAR!" target="_blank" class="bg-green-600/20 text-green-400 border border-green-500/30 px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-green-600 hover:text-white transition flex items-center justify-center w-max">
+                                <i class="fa-brands fa-whatsapp mr-1.5"></i> Chat Customer
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableBody.innerHTML = html;
+            document.getElementById('stat-total-orders').innerText = orders.length;
+            document.getElementById('stat-total-revenue').innerText = 'PKR ' + totalRevenue.toLocaleString();
+        }
+
+        // Auto load on page open
+        window.onload = fetchOrders;
+    </script>
+</body>
+</html>
